@@ -42,12 +42,12 @@ export function App() {
   const [kind, setKind] = useState<SourceKind>("text");
   const [text, setText] = useState("ASCENSION");
   const [fileUrl, setFileUrl] = useState<string | null>(null);
-  const [arch, setArch] = useState(0.42);
-  const [wobble, setWobble] = useState(0.007);
-  const [sparkles, setSparkles] = useState(220);
-  const [bloom, setBloom] = useState(0.75);
+  const [arch, setArch] = useState(0.6);
+  const [wobble, setWobble] = useState(0.01);
+  const [sparkles, setSparkles] = useState(70);
+  const [bloom, setBloom] = useState(0.55);
   const [speed, setSpeed] = useState(1);
-  const [tint, setTint] = useState("#dfe4ff");
+  const [tint, setTint] = useState("#aeb9dc");
   const [pointerTilt, setPointerTilt] = useState(true);
 
   const source: LogoSource = useMemo(() => {

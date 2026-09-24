@@ -12,6 +12,8 @@ export interface ChromeMaterialHandle {
     uWobble: { value: number };
     uWobbleScale: { value: number };
     uTime: { value: number };
+    uRimStrength: { value: number };
+    uRimColor: { value: THREE.Color };
   };
 }
 
@@ -22,16 +24,18 @@ export function createChromeMaterial(
     uWobble: { value: options.wobble },
     uWobbleScale: { value: options.wobbleScale },
     uTime: { value: 0 },
+    uRimStrength: { value: 0.9 },
+    uRimColor: { value: new THREE.Color("#f2f4ff") },
   };
 
   const material = new THREE.MeshPhysicalMaterial({
     color: new THREE.Color(options.tint),
-    metalness: 1.0,
-    roughness: 0.22,
-    envMapIntensity: 1.15,
-    clearcoat: 0.4,
-    clearcoatRoughness: 0.3,
-    reflectivity: 1.0,
+    metalness: 0.25,
+    roughness: 0.6,
+    envMapIntensity: 0.22,
+    clearcoat: 0.15,
+    clearcoatRoughness: 0.5,
+    reflectivity: 0.6,
   });
 
   material.onBeforeCompile = (shader) => {
@@ -55,10 +59,26 @@ uniform float uTime;`,
     + sin(q.y * 0.9 - q.x * 0.6 + uTime * 0.8)
     + 0.6 * sin(q.y * 2.1 + q.x * 1.7 - 0.9 - uTime * 0.6);
   transformed += normal * wob * uWobble;
+  vec2 q2 = position.xy / max(uWobbleScale * 0.6, 1e-4);
+  transformed.x += sin(q2.y * 2.1 + q2.x * 0.4 + uTime * 0.6) * uWobble * 0.55;
+  transformed.y += cos(q2.x * 1.7 - q2.y * 0.5 + uTime * 0.5) * uWobble * 0.55;
 }`,
       );
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        "#include <common>",
+        `#include <common>
+uniform float uRimStrength;
+uniform vec3 uRimColor;`,
+      )
+      .replace(
+        "#include <opaque_fragment>",
+        `float rimF = pow(1.0 - clamp(dot(normalize(vNormal), normalize(vViewPosition)), 0.0, 1.0), 1.7);
+outgoingLight += uRimColor * rimF * uRimStrength;
+#include <opaque_fragment>`,
+      );
   };
-  material.customProgramCacheKey = () => "chrome-wobble";
+  material.customProgramCacheKey = () => "chrome-wobble-rim";
 
   return { material, uniforms };
 }

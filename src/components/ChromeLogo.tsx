@@ -82,8 +82,8 @@ function Effects({ bloom, speed }: { bloom: number; speed: number }) {
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(size.width, size.height),
       bloom,
-      0.55,
-      0.72,
+      0.5,
+      0.88,
     );
     c.addPass(bloomPass);
     const grainPass = new ShaderPass(GRAIN_SHADER);
@@ -175,13 +175,13 @@ export function ChromeLogo(props: ChromeLogoProps) {
 
   const resolved = {
     source,
-    arch: props.arch ?? 0.42,
-    wobble: props.wobble ?? 0.007,
-    sparkles: props.sparkles ?? 220,
-    sparkleSize: props.sparkleSize ?? 0.2,
-    bloom: props.bloom ?? 0.75,
+    arch: props.arch ?? 0.6,
+    wobble: props.wobble ?? 0.01,
+    sparkles: props.sparkles ?? 70,
+    sparkleSize: props.sparkleSize ?? 0.9,
+    bloom: props.bloom ?? 0.55,
     speed: props.speed ?? 1,
-    tint: props.tint ?? "#dfe4ff",
+    tint: props.tint ?? "#aeb9dc",
     pointerTilt: props.pointerTilt ?? true,
   };
 

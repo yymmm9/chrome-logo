@@ -67,7 +67,7 @@ void main() {
   float s = sin(uTime * 2.4 + aSeed * 6.2831853);
   vTwinkle = pow(max(0.5 + 0.5 * s, 0.0), 3.0);
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
-  gl_PointSize = uSize * (0.35 + 1.15 * vTwinkle) * (160.0 / max(-mv.z, 1.0));
+  gl_PointSize = uSize * (0.4 + 1.3 * vTwinkle) * (160.0 / max(-mv.z, 1.0));
   gl_Position = projectionMatrix * mv;
 }
 `;
@@ -107,8 +107,8 @@ export function Sparkles({ geometry, count, size, speed }: SparklesProps) {
       do {
         sampler.sample(p, n);
         tries++;
-      } while (n.z < 0.35 && tries < 24);
-      const offset = n.clone().multiplyScalar(0.012);
+      } while ((n.z > 0.8 || n.z < 0.12) && tries < 24);
+      const offset = n.clone().multiplyScalar(0.03);
       positions[i * 3] = p.x + offset.x;
       positions[i * 3 + 1] = p.y + offset.y;
       positions[i * 3 + 2] = p.z + offset.z;

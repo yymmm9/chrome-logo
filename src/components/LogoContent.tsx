@@ -136,13 +136,14 @@ export function useLogoGeometry(
       geometry = new TextGeometry(source.text || " ", {
         font,
         size: 1,
-        depth: 0.3,
+        depth: 0.18,
         curveSegments: 12,
         bevelEnabled: true,
-        bevelThickness: 0.05,
-        bevelSize: 0.03,
-        bevelSegments: 4,
+        bevelThickness: 0.03,
+        bevelSize: 0.02,
+        bevelSegments: 3,
       });
+      geometry.scale(0.66, 1.3, 1);
     } else if (source.kind === "svg" && svgText) {
       const parsed = svgLoader.parse(svgText);
       const shapes = parsed.paths.flatMap((p) =>
